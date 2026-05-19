@@ -10,6 +10,7 @@
   --shadow: rgba(0, 0, 0, 0.28);
 
   --accent-orange: #c06f45;
+  --accent-yellow: #d3b451;
   --accent-blue: #7aa6ad;
   --accent-green: #6f9a72;
   --accent-pink: #c96f83;
@@ -44,7 +45,7 @@ body {
 }
 
 .dashboard {
-  width: min(100%, 1366px);
+  width: min(100%, 1880px);
   min-height: 100vh;
   margin: 0 auto;
   padding: clamp(14px, 2vw, 26px);
@@ -85,7 +86,7 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
   gap: clamp(18px, 2.4vw, 32px);
   align-items: stretch;
   padding-top: clamp(18px, 3vh, 34px);
@@ -182,7 +183,8 @@ body {
 }
 
 .weekday.sun,
-.day.sun {
+.day.sun,
+.day.holiday {
   color: var(--accent-sunday);
 }
 
@@ -208,7 +210,7 @@ body {
 .progress-stack {
   display: grid;
   align-content: center;
-  gap: clamp(18px, 4vh, 34px);
+  gap: clamp(15px, 3vh, 28px);
   padding: clamp(14px, 2vw, 22px);
   border: 1px solid var(--line);
   background: var(--panel);
@@ -216,7 +218,7 @@ body {
 
 .progress-item {
   display: grid;
-  grid-template-columns: clamp(100px, 11vw, 128px) minmax(112px, 1fr);
+  grid-template-columns: clamp(100px, 7vw, 132px) minmax(180px, 1fr);
   gap: 16px;
   align-items: center;
 }
@@ -254,6 +256,10 @@ body {
   --donut-color: var(--accent-blue);
 }
 
+.accent-yellow {
+  --donut-color: var(--accent-yellow);
+}
+
 .accent-green {
   --donut-color: var(--accent-green);
 }
@@ -278,6 +284,11 @@ body {
   font-size: clamp(1.55rem, 2.15vw, 2.4rem);
   letter-spacing: 0.035em;
   line-height: 1;
+}
+
+.progress-item[data-period="day"] .progress-copy p:last-child strong,
+.progress-item[data-period="day"] .progress-copy p:last-child small {
+  color: var(--accent-yellow);
 }
 
 .progress-copy strong {
@@ -325,7 +336,7 @@ body {
   }
 
   .progress-stack {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;
   }
 
@@ -337,6 +348,25 @@ body {
 
   .progress-copy {
     width: min(100%, 190px);
+  }
+}
+
+@media (min-width: 1400px) {
+  .topbar {
+    min-height: clamp(124px, 13vh, 164px);
+  }
+
+  .primary {
+    grid-template-rows: minmax(300px, 1fr) auto;
+  }
+
+  .clock {
+    font-size: clamp(13rem, 17vw, 19rem);
+  }
+
+  .weekday,
+  .day {
+    min-height: clamp(32px, 4vh, 46px);
   }
 }
 
@@ -386,6 +416,16 @@ body {
   .progress-stack {
     gap: 22px;
     padding: 16px;
+  }
+
+  .progress-item {
+    grid-template-columns: 104px minmax(154px, 1fr);
+    gap: 12px;
+  }
+
+  .progress-copy p {
+    gap: 6px;
+    font-size: clamp(1.4rem, 2vw, 1.85rem);
   }
 }
 
