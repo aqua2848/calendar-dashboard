@@ -238,9 +238,8 @@
 
   function nudgeDashboard() {
     var x = Math.round(Math.random() * 6) - 3;
-    var y = Math.round(Math.random() * 6) - 3;
     els.dashboard.style.setProperty("--nudge-x", x + "px");
-    els.dashboard.style.setProperty("--nudge-y", y + "px");
+    els.dashboard.style.setProperty("--nudge-y", "0px");
   }
 
   update();
