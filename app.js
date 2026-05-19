@@ -15,9 +15,12 @@
     weekLabel: document.getElementById("weekLabel"),
     currentMonth: document.getElementById("currentMonth"),
     nextMonth: document.getElementById("nextMonth"),
+    dayDonut: document.getElementById("dayDonut"),
     weekDonut: document.getElementById("weekDonut"),
     monthDonut: document.getElementById("monthDonut"),
     yearDonut: document.getElementById("yearDonut"),
+    dayPassed: document.getElementById("dayPassed"),
+    dayLeft: document.getElementById("dayLeft"),
     weekPassed: document.getElementById("weekPassed"),
     weekLeft: document.getElementById("weekLeft"),
     monthPassed: document.getElementById("monthPassed"),
@@ -28,6 +31,8 @@
 
   var lastMinute = "";
   var lastDateKey = "";
+  var holidayNamesByDate = {};
+  var requestedHolidayYears = {};
 
   function pad2(value) {
     return String(value).padStart(2, "0");
@@ -93,7 +98,14 @@
       if (cellDate.getDay() === 0) dayClass += " sun";
       if (cellDate.getDay() === 6) dayClass += " sat";
       if (getDateKey(cellDate) === todayKey) dayClass += " today";
-      grid.appendChild(createCell("div", dayClass, day));
+      var dateKey = getDateKey(cellDate);
+      var cell = createCell("div", dayClass, day);
+      if (holidayNamesByDate[dateKey]) {
+        cell.className += " holiday";
+        cell.title = holidayNamesByDate[dateKey];
+        cell.setAttribute("aria-label", day + " " + holidayNamesByDate[dateKey]);
+      }
+      grid.appendChild(cell);
     }
 
     container.textContent = "";
@@ -124,6 +136,12 @@
     return getProgress(now, start, end);
   }
 
+  function getDayProgress(now) {
+    var start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    return getProgress(now, start, end);
+  }
+
   function getMonthProgress(now) {
     var start = new Date(now.getFullYear(), now.getMonth(), 1);
     var end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
@@ -142,12 +160,58 @@
     els[prefix + "Left"].textContent = progress.left;
   }
 
+  function rememberHolidays(data) {
+    Object.keys(data || {}).forEach(function (dateKey) {
+      holidayNamesByDate[dateKey] = data[dateKey];
+    });
+  }
+
+  function fetchHolidaysForYear(year, today) {
+    requestedHolidayYears[year] = true;
+    return fetch("https://holidays-jp.github.io/api/v1/" + year + "/date.json", {
+      cache: "force-cache"
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("Holiday API request failed");
+        return response.json();
+      })
+      .then(rememberHolidays)
+      .catch(function () {
+        return fetch("https://holidays-jp.github.io/api/v1/date.json", {
+          cache: "force-cache"
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error("Holiday API fallback failed");
+            return response.json();
+          })
+          .then(rememberHolidays);
+      })
+      .catch(function () {
+        return null;
+      })
+      .then(function () {
+        renderStaticForDate(today);
+      });
+  }
+
+  function ensureHolidayData(now) {
+    if (!window.fetch) return;
+
+    var nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    [now.getFullYear(), nextMonth.getFullYear()].forEach(function (year) {
+      if (!requestedHolidayYears[year]) {
+        fetchHolidaysForYear(year, new Date(now));
+      }
+    });
+  }
+
   function renderStaticForDate(now) {
     var nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     els.dateLabel.textContent = formatDateLabel(now);
     els.weekLabel.textContent = "WEEK " + pad2(getIsoWeekNumber(now));
     renderMonth(els.currentMonth, now.getFullYear(), now.getMonth(), now);
     renderMonth(els.nextMonth, nextMonth.getFullYear(), nextMonth.getMonth(), now);
+    ensureHolidayData(now);
   }
 
   function update() {
@@ -166,6 +230,7 @@
       lastDateKey = dateKey;
     }
 
+    setProgress("day", getDayProgress(now));
     setProgress("week", getWeekProgress(now));
     setProgress("month", getMonthProgress(now));
     setProgress("year", getYearProgress(now));
