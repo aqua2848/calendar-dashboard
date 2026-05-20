@@ -16,6 +16,8 @@
   --accent-pink: #c96f83;
   --accent-weekend: #94b6bd;
   --accent-sunday: #d1784c;
+  --today-bg: #b9aa46;
+  --today-text: #17181c;
 
   --header-font: "Bebas Neue", "Oswald", Arial, sans-serif;
   --display-font: "Oswald", "Arial Narrow", Arial, sans-serif;
@@ -100,9 +102,12 @@ body {
 }
 
 .clock-panel {
+  position: relative;
   display: flex;
   align-items: center;
+  min-width: 0;
   min-height: clamp(238px, 37vh, 390px);
+  overflow: hidden;
   padding: clamp(12px, 2vw, 22px);
   border: 1px solid var(--line);
   background:
@@ -122,6 +127,54 @@ body {
   text-align: center;
   text-shadow: 0 7px 0 rgba(0, 0, 0, 0.16);
   white-space: nowrap;
+}
+
+.weather {
+  position: absolute;
+  top: clamp(12px, 1.6vw, 20px);
+  right: clamp(12px, 1.8vw, 24px);
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  color: #d8d0c0;
+  font-family: var(--header-font);
+  letter-spacing: 0.045em;
+  line-height: 1;
+}
+
+.weather-label {
+  color: var(--muted);
+  font-size: clamp(1rem, 1.2vw, 1.35rem);
+}
+
+.weather-main {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.1vw, 18px);
+  white-space: nowrap;
+}
+
+.weather-icon {
+  color: var(--accent-yellow);
+  font-size: clamp(1.85rem, 2.6vw, 3rem);
+  line-height: 0.9;
+}
+
+.weather-temp {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: clamp(1.15rem, 1.45vw, 1.7rem);
+}
+
+.weather-temp span {
+  color: #c9c0ad;
+}
+
+.weather-temp strong {
+  color: var(--text);
+  font-size: 1.26em;
+  font-weight: 700;
 }
 
 .calendars {
@@ -194,7 +247,7 @@ body {
 }
 
 .day.today {
-  color: #15171c;
+  color: var(--today-text);
   z-index: 0;
 }
 
@@ -203,7 +256,7 @@ body {
   inset: 2px 12%;
   z-index: -1;
   border: 1px solid rgba(255, 255, 255, 0.28);
-  background: #d7c36e;
+  background: var(--today-bg);
   content: "";
 }
 
@@ -326,7 +379,7 @@ body {
   font-size: 0.58em;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   body {
     overflow-y: auto;
   }
@@ -403,7 +456,23 @@ body {
   }
 
   .clock {
-    font-size: 12rem;
+    font-size: clamp(9.2rem, 18vw, 12rem);
+  }
+
+  .weather {
+    gap: 5px;
+  }
+
+  .weather-label {
+    font-size: 1rem;
+  }
+
+  .weather-main {
+    gap: 9px;
+  }
+
+  .weather-temp {
+    font-size: 1.08rem;
   }
 
   .calendar-grid {
@@ -451,6 +520,18 @@ body {
 
   .clock {
     font-size: clamp(5rem, 27vw, 8.5rem);
+  }
+
+  .weather {
+    position: static;
+    justify-items: center;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .clock-panel {
+    display: grid;
+    justify-items: center;
   }
 
   .calendars,
