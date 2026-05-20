@@ -88,7 +88,7 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 22vw, 380px);
   gap: clamp(18px, 2.4vw, 32px);
   align-items: stretch;
   padding-top: clamp(18px, 3vh, 34px);
@@ -133,38 +133,42 @@ body {
   position: absolute;
   top: clamp(12px, 1.6vw, 20px);
   right: clamp(12px, 1.8vw, 24px);
-  display: grid;
-  justify-items: end;
-  gap: 6px;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: clamp(7px, 0.85vw, 13px);
   color: #d8d0c0;
   font-family: var(--header-font);
   letter-spacing: 0.045em;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .weather-label {
   color: var(--muted);
-  font-size: clamp(1rem, 1.2vw, 1.35rem);
+  font-size: clamp(0.95rem, 1vw, 1.25rem);
+  line-height: 1;
 }
 
 .weather-main {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 1.1vw, 18px);
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(7px, 0.85vw, 13px);
   white-space: nowrap;
 }
 
 .weather-icon {
   color: var(--accent-yellow);
-  font-size: clamp(1.85rem, 2.6vw, 3rem);
-  line-height: 0.9;
+  font-size: clamp(1.55rem, 2vw, 2.35rem);
+  line-height: 1;
 }
 
 .weather-temp {
   display: inline-flex;
   align-items: baseline;
   gap: 5px;
-  font-size: clamp(1.15rem, 1.45vw, 1.7rem);
+  font-size: clamp(1.05rem, 1.22vw, 1.45rem);
+  line-height: 1;
 }
 
 .weather-temp span {
@@ -263,20 +267,20 @@ body {
 .progress-stack {
   display: grid;
   align-content: center;
-  gap: clamp(15px, 3vh, 28px);
-  padding: clamp(14px, 2vw, 22px);
+  gap: clamp(14px, 2.45vh, 24px);
+  padding: clamp(14px, 1.55vw, 20px);
   border: 1px solid var(--line);
   background: var(--panel);
 }
 
 .progress-item {
-  --donut-size: clamp(100px, 7vw, 132px);
-  --progress-copy-width: clamp(168px, 10.5vw, 210px);
+  --donut-size: clamp(92px, 6vw, 118px);
+  --progress-copy-width: clamp(148px, 8.8vw, 178px);
 
   display: grid;
   grid-template-columns: var(--donut-size) var(--progress-copy-width);
   justify-content: center;
-  gap: clamp(14px, 1.4vw, 22px);
+  gap: clamp(12px, 1.15vw, 18px);
   align-items: center;
 }
 
@@ -491,13 +495,13 @@ body {
   }
 
   .progress-stack {
-    gap: 22px;
+    gap: 18px;
     padding: 16px;
   }
 
   .progress-item {
-    --donut-size: 104px;
-    --progress-copy-width: 176px;
+    --donut-size: 96px;
+    --progress-copy-width: 158px;
 
     grid-template-columns: var(--donut-size) var(--progress-copy-width);
     gap: 12px;
@@ -524,7 +528,7 @@ body {
 
   .weather {
     position: static;
-    justify-items: center;
+    justify-content: center;
     margin-top: 10px;
     width: 100%;
   }
@@ -541,9 +545,10 @@ body {
 
   .progress-item {
     --donut-size: 104px;
-    --progress-copy-width: minmax(0, 1fr);
+    --progress-copy-width: minmax(150px, 178px);
 
     grid-template-columns: var(--donut-size) var(--progress-copy-width);
+    justify-content: center;
     justify-items: stretch;
     text-align: left;
   }
