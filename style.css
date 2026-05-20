@@ -218,10 +218,12 @@ body {
 
 .progress-item {
   --donut-size: clamp(100px, 7vw, 132px);
+  --progress-copy-width: clamp(168px, 10.5vw, 210px);
 
   display: grid;
-  grid-template-columns: var(--donut-size) minmax(180px, 1fr);
-  gap: 16px;
+  grid-template-columns: var(--donut-size) var(--progress-copy-width);
+  justify-content: center;
+  gap: clamp(14px, 1.4vw, 22px);
   align-items: center;
 }
 
@@ -276,6 +278,7 @@ body {
 .progress-copy {
   display: grid;
   gap: 7px;
+  width: var(--progress-copy-width);
 }
 
 .progress-copy p {
@@ -425,8 +428,9 @@ body {
 
   .progress-item {
     --donut-size: 104px;
+    --progress-copy-width: 176px;
 
-    grid-template-columns: 104px minmax(154px, 1fr);
+    grid-template-columns: var(--donut-size) var(--progress-copy-width);
     gap: 12px;
   }
 
@@ -456,8 +460,9 @@ body {
 
   .progress-item {
     --donut-size: 104px;
+    --progress-copy-width: minmax(0, 1fr);
 
-    grid-template-columns: 104px minmax(0, 1fr);
+    grid-template-columns: var(--donut-size) var(--progress-copy-width);
     justify-items: stretch;
     text-align: left;
   }
