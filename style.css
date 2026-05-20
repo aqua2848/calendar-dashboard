@@ -16,6 +16,8 @@
   --accent-pink: #c96f83;
   --accent-weekend: #94b6bd;
   --accent-sunday: #d1784c;
+  --today-bg: #b9aa46;
+  --today-text: #17181c;
 
   --header-font: "Bebas Neue", "Oswald", Arial, sans-serif;
   --display-font: "Oswald", "Arial Narrow", Arial, sans-serif;
@@ -86,7 +88,7 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 22vw, 380px);
   gap: clamp(18px, 2.4vw, 32px);
   align-items: stretch;
   padding-top: clamp(18px, 3vh, 34px);
@@ -100,9 +102,12 @@ body {
 }
 
 .clock-panel {
+  position: relative;
   display: flex;
   align-items: center;
+  min-width: 0;
   min-height: clamp(238px, 37vh, 390px);
+  overflow: hidden;
   padding: clamp(12px, 2vw, 22px);
   border: 1px solid var(--line);
   background:
@@ -122,6 +127,58 @@ body {
   text-align: center;
   text-shadow: 0 7px 0 rgba(0, 0, 0, 0.16);
   white-space: nowrap;
+}
+
+.weather {
+  position: absolute;
+  top: clamp(12px, 1.6vw, 20px);
+  right: clamp(12px, 1.8vw, 24px);
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: clamp(7px, 0.85vw, 13px);
+  color: #d8d0c0;
+  font-family: var(--header-font);
+  letter-spacing: 0.045em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.weather-label {
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1vw, 1.25rem);
+  line-height: 1;
+}
+
+.weather-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(7px, 0.85vw, 13px);
+  white-space: nowrap;
+}
+
+.weather-icon {
+  color: var(--accent-yellow);
+  font-size: clamp(1.55rem, 2vw, 2.35rem);
+  line-height: 1;
+}
+
+.weather-temp {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: clamp(1.05rem, 1.22vw, 1.45rem);
+  line-height: 1;
+}
+
+.weather-temp span {
+  color: #c9c0ad;
+}
+
+.weather-temp strong {
+  color: var(--text);
+  font-size: 1.26em;
+  font-weight: 700;
 }
 
 .calendars {
@@ -194,7 +251,7 @@ body {
 }
 
 .day.today {
-  color: #15171c;
+  color: var(--today-text);
   z-index: 0;
 }
 
@@ -203,25 +260,27 @@ body {
   inset: 2px 12%;
   z-index: -1;
   border: 1px solid rgba(255, 255, 255, 0.28);
-  background: #d7c36e;
+  background: var(--today-bg);
   content: "";
 }
 
 .progress-stack {
   display: grid;
   align-content: center;
-  gap: clamp(15px, 3vh, 28px);
-  padding: clamp(14px, 2vw, 22px);
+  gap: clamp(14px, 2.45vh, 24px);
+  padding: clamp(14px, 1.55vw, 20px);
   border: 1px solid var(--line);
   background: var(--panel);
 }
 
 .progress-item {
-  --donut-size: clamp(100px, 7vw, 132px);
+  --donut-size: clamp(92px, 6vw, 118px);
+  --progress-copy-width: clamp(148px, 8.8vw, 178px);
 
   display: grid;
-  grid-template-columns: var(--donut-size) minmax(180px, 1fr);
-  gap: 16px;
+  grid-template-columns: var(--donut-size) var(--progress-copy-width);
+  justify-content: center;
+  gap: clamp(12px, 1.15vw, 18px);
   align-items: center;
 }
 
@@ -276,6 +335,7 @@ body {
 .progress-copy {
   display: grid;
   gap: 7px;
+  width: var(--progress-copy-width);
 }
 
 .progress-copy p {
@@ -323,7 +383,7 @@ body {
   font-size: 0.58em;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   body {
     overflow-y: auto;
   }
@@ -400,7 +460,23 @@ body {
   }
 
   .clock {
-    font-size: 12rem;
+    font-size: clamp(9.2rem, 18vw, 12rem);
+  }
+
+  .weather {
+    gap: 5px;
+  }
+
+  .weather-label {
+    font-size: 1rem;
+  }
+
+  .weather-main {
+    gap: 9px;
+  }
+
+  .weather-temp {
+    font-size: 1.08rem;
   }
 
   .calendar-grid {
@@ -419,14 +495,15 @@ body {
   }
 
   .progress-stack {
-    gap: 22px;
+    gap: 18px;
     padding: 16px;
   }
 
   .progress-item {
-    --donut-size: 104px;
+    --donut-size: 96px;
+    --progress-copy-width: 158px;
 
-    grid-template-columns: 104px minmax(154px, 1fr);
+    grid-template-columns: var(--donut-size) var(--progress-copy-width);
     gap: 12px;
   }
 
@@ -449,6 +526,18 @@ body {
     font-size: clamp(5rem, 27vw, 8.5rem);
   }
 
+  .weather {
+    position: static;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .clock-panel {
+    display: grid;
+    justify-items: center;
+  }
+
   .calendars,
   .progress-stack {
     grid-template-columns: 1fr;
@@ -456,8 +545,10 @@ body {
 
   .progress-item {
     --donut-size: 104px;
+    --progress-copy-width: minmax(150px, 178px);
 
-    grid-template-columns: 104px minmax(0, 1fr);
+    grid-template-columns: var(--donut-size) var(--progress-copy-width);
+    justify-content: center;
     justify-items: stretch;
     text-align: left;
   }

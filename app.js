@@ -13,6 +13,9 @@
     clock: document.getElementById("clock"),
     dateLabel: document.getElementById("dateLabel"),
     weekLabel: document.getElementById("weekLabel"),
+    weatherIcon: document.getElementById("weatherIcon"),
+    weatherHigh: document.getElementById("weatherHigh"),
+    weatherLow: document.getElementById("weatherLow"),
     currentMonth: document.getElementById("currentMonth"),
     nextMonth: document.getElementById("nextMonth"),
     dayDonut: document.getElementById("dayDonut"),
@@ -33,6 +36,10 @@
   var lastDateKey = "";
   var holidayNamesByDate = {};
   var requestedHolidayYears = {};
+  var defaultWeatherLocation = {
+    latitude: 35.3369,
+    longitude: 139.4476
+  };
 
   function pad2(value) {
     return String(value).padStart(2, "0");
@@ -160,6 +167,74 @@
     els[prefix + "Left"].textContent = progress.left;
   }
 
+  function weatherCodeToIcon(code) {
+    if (code === 0 || code === 1) return "☀︎";
+    if (code === 2 || code === 3 || code === 45 || code === 48) return "☁︎";
+    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return "☔";
+    if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return "❄︎";
+    if (code >= 95 && code <= 99) return "⚡";
+    return "◌";
+  }
+
+  function setWeatherFallback() {
+    els.weatherIcon.textContent = "◌";
+    els.weatherHigh.textContent = "--°";
+    els.weatherLow.textContent = "--°";
+  }
+
+  function setWeather(data) {
+    var daily = data && data.daily;
+    var code = daily && daily.weather_code && daily.weather_code[0];
+    var high = daily && daily.temperature_2m_max && daily.temperature_2m_max[0];
+    var low = daily && daily.temperature_2m_min && daily.temperature_2m_min[0];
+
+    els.weatherIcon.textContent = weatherCodeToIcon(code);
+    els.weatherHigh.textContent = typeof high === "number" ? Math.round(high) + "°" : "--°";
+    els.weatherLow.textContent = typeof low === "number" ? Math.round(low) + "°" : "--°";
+  }
+
+  function fetchWeather(latitude, longitude) {
+    if (!window.fetch) {
+      setWeatherFallback();
+      return;
+    }
+
+    var url = "https://api.open-meteo.com/v1/forecast"
+      + "?latitude=" + encodeURIComponent(latitude)
+      + "&longitude=" + encodeURIComponent(longitude)
+      + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
+      + "&timezone=Asia%2FTokyo";
+
+    fetch(url, { cache: "no-store" })
+      .then(function (response) {
+        if (!response.ok) throw new Error("Weather API request failed");
+        return response.json();
+      })
+      .then(setWeather)
+      .catch(setWeatherFallback);
+  }
+
+  function updateWeather() {
+    if (!navigator.geolocation) {
+      fetchWeather(defaultWeatherLocation.latitude, defaultWeatherLocation.longitude);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        fetchWeather(position.coords.latitude, position.coords.longitude);
+      },
+      function () {
+        fetchWeather(defaultWeatherLocation.latitude, defaultWeatherLocation.longitude);
+      },
+      {
+        enableHighAccuracy: false,
+        maximumAge: 3600000,
+        timeout: 6000
+      }
+    );
+  }
+
   function rememberHolidays(data) {
     Object.keys(data || {}).forEach(function (dateKey) {
       holidayNamesByDate[dateKey] = data[dateKey];
@@ -243,7 +318,10 @@
   }
 
   update();
+  setWeatherFallback();
+  updateWeather();
   nudgeDashboard();
   window.setInterval(update, 1000);
+  window.setInterval(updateWeather, 3600000);
   window.setInterval(nudgeDashboard, 240000);
 })();
