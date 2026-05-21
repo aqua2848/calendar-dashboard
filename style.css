@@ -181,6 +181,188 @@ body {
   font-weight: 700;
 }
 
+.side-panel {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  padding: clamp(14px, 1.55vw, 20px);
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.panel-section {
+  padding: clamp(14px, 1.8vh, 20px) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.panel-section:first-child {
+  padding-top: 0;
+}
+
+.panel-section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.section-heading,
+.section-subheading {
+  color: #c9c0ad;
+  font-family: var(--header-font);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: clamp(1.12rem, 1.25vw, 1.45rem);
+}
+
+.section-heading strong {
+  color: var(--accent-weekend);
+  font-size: 0.82em;
+  font-weight: 400;
+}
+
+.section-subheading {
+  margin: 14px 0 10px;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1vw, 1.16rem);
+}
+
+.train-status {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(111, 154, 114, 0.35);
+  background: rgba(111, 154, 114, 0.1);
+}
+
+.train-status-icon {
+  color: var(--accent-green);
+  font-size: clamp(1.35rem, 1.6vw, 1.85rem);
+  line-height: 1;
+}
+
+.train-status strong {
+  display: block;
+  color: #94c49b;
+  font-family: var(--header-font);
+  font-size: clamp(1.25rem, 1.45vw, 1.8rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.train-status p,
+.weather-summary {
+  margin: 4px 0 0;
+  color: #cfc7b8;
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  line-height: 1.25;
+}
+
+.train-status[data-state="unknown"] {
+  border-color: rgba(201, 111, 131, 0.36);
+  background: rgba(201, 111, 131, 0.1);
+}
+
+.train-status[data-state="unknown"] .train-status-icon,
+.train-status[data-state="unknown"] strong {
+  color: var(--accent-pink);
+}
+
+.train-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.train-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  align-items: baseline;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.train-list li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.train-list strong {
+  grid-row: span 2;
+  color: #94c49b;
+  font-family: var(--mono-font);
+  font-size: clamp(1.7rem, 2vw, 2.3rem);
+  line-height: 1;
+}
+
+.train-list span {
+  color: #d8d0c0;
+  font-family: var(--header-font);
+  font-size: clamp(1rem, 1.05vw, 1.22rem);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.train-list p {
+  margin: 3px 0 0;
+  color: var(--accent-weekend);
+  font-size: clamp(0.96rem, 1vw, 1.12rem);
+  line-height: 1.15;
+}
+
+.weather-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: #d8d0c0;
+  font-family: var(--header-font);
+  line-height: 1;
+}
+
+.weather-panel .weather-icon {
+  color: var(--accent-yellow);
+  font-size: clamp(2rem, 2.25vw, 2.65rem);
+}
+
+.weather-row strong {
+  color: var(--text);
+  font-size: clamp(1.65rem, 1.8vw, 2.15rem);
+}
+
+.compact-progress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.compact-progress-item {
+  --donut-size: clamp(54px, 4.8vw, 68px);
+
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.compact-progress-item strong {
+  color: #c9c0ad;
+  font-family: var(--header-font);
+  font-size: clamp(0.9rem, 0.9vw, 1.05rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
 .calendars {
   display: grid;
   grid-template-columns: repeat(2, minmax(250px, 1fr));
@@ -288,8 +470,8 @@ body {
   position: relative;
   display: grid;
   place-items: center;
-  width: var(--donut-size);
-  height: var(--donut-size);
+  width: var(--donut-size, 64px);
+  height: var(--donut-size, 64px);
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--panel-2);
@@ -314,6 +496,11 @@ body {
   font-family: var(--header-font);
   font-size: clamp(1.45rem, 2.2vw, 2rem);
   letter-spacing: 0.05em;
+}
+
+.mini-donut span {
+  font-size: clamp(0.95rem, 1vw, 1.15rem);
+  letter-spacing: 0;
 }
 
 .accent-blue {

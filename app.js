@@ -16,20 +16,22 @@
     weatherIcon: document.getElementById("weatherIcon"),
     weatherHigh: document.getElementById("weatherHigh"),
     weatherLow: document.getElementById("weatherLow"),
+    weatherSummary: document.getElementById("weatherSummary"),
+    trainStatus: document.getElementById("trainStatus"),
+    trainStatusIcon: document.getElementById("trainStatusIcon"),
+    trainStatusMain: document.getElementById("trainStatusMain"),
+    trainStatusDetail: document.getElementById("trainStatusDetail"),
+    trainList: document.getElementById("trainList"),
     currentMonth: document.getElementById("currentMonth"),
     nextMonth: document.getElementById("nextMonth"),
     dayDonut: document.getElementById("dayDonut"),
     weekDonut: document.getElementById("weekDonut"),
     monthDonut: document.getElementById("monthDonut"),
     yearDonut: document.getElementById("yearDonut"),
-    dayPassed: document.getElementById("dayPassed"),
-    dayLeft: document.getElementById("dayLeft"),
-    weekPassed: document.getElementById("weekPassed"),
-    weekLeft: document.getElementById("weekLeft"),
-    monthPassed: document.getElementById("monthPassed"),
-    monthLeft: document.getElementById("monthLeft"),
-    yearPassed: document.getElementById("yearPassed"),
-    yearLeft: document.getElementById("yearLeft")
+    dayPercent: document.getElementById("dayPercent"),
+    weekPercent: document.getElementById("weekPercent"),
+    monthPercent: document.getElementById("monthPercent"),
+    yearPercent: document.getElementById("yearPercent")
   };
 
   var lastMinute = "";
@@ -39,6 +41,59 @@
   var defaultWeatherLocation = {
     latitude: 35.3369,
     longitude: 139.4476
+  };
+  var AUTO_DETECT_NEAREST_STATION = false;
+  var TRAIN_CONFIG = {
+    stationName: "辻堂",
+    lineName: "東海道線",
+    direction: "up",
+    walkMinutes: 3,
+    platform: "2",
+    destinationLabel: "品川・東京方面"
+  };
+  var TOKAIDO_UP_TIMETABLE = {
+    weekday: [
+      "05:12", "05:25", "05:39", "05:52",
+      "06:03", "06:14", "06:25", "06:36", "06:47", "06:58",
+      "07:08", "07:18", "07:28", "07:38", "07:48", "07:58",
+      "08:08", "08:18", "08:28", "08:39", "08:50",
+      "09:02", "09:12", "09:22", "09:32", "09:42", "09:52",
+      "10:02", "10:12", "10:22", "10:32", "10:42", "10:52",
+      "11:02", "11:12", "11:22", "11:32", "11:42", "11:52",
+      "12:02", "12:12", "12:22", "12:32", "12:42", "12:52",
+      "13:02", "13:12", "13:22", "13:32", "13:42", "13:52",
+      "14:02", "14:12", "14:22", "14:32", "14:42", "14:52",
+      "15:02", "15:12", "15:22", "15:32", "15:42", "15:52",
+      "16:02", "16:12", "16:22", "16:32", "16:42", "16:52",
+      "17:02", "17:12", "17:22", "17:32", "17:42", "17:52",
+      "18:02", "18:12", "18:22", "18:32", "18:42", "18:52",
+      "19:02", "19:12", "19:22", "19:32", "19:42", "19:52",
+      "20:02", "20:12", "20:22", "20:32", "20:42", "20:52",
+      "21:02", "21:12", "21:22", "21:32", "21:42", "21:52",
+      "22:04", "22:17", "22:30", "22:43", "22:56",
+      "23:09", "23:22", "23:35", "23:48"
+    ],
+    weekend: [
+      "05:14", "05:29", "05:44", "05:59",
+      "06:14", "06:29", "06:44", "06:59",
+      "07:14", "07:29", "07:44", "07:59",
+      "08:12", "08:24", "08:36", "08:48",
+      "09:00", "09:12", "09:24", "09:36", "09:48",
+      "10:00", "10:12", "10:24", "10:36", "10:48",
+      "11:00", "11:12", "11:24", "11:36", "11:48",
+      "12:00", "12:12", "12:24", "12:36", "12:48",
+      "13:00", "13:12", "13:24", "13:36", "13:48",
+      "14:00", "14:12", "14:24", "14:36", "14:48",
+      "15:00", "15:12", "15:24", "15:36", "15:48",
+      "16:00", "16:12", "16:24", "16:36", "16:48",
+      "17:00", "17:12", "17:24", "17:36", "17:48",
+      "18:00", "18:12", "18:24", "18:36", "18:48",
+      "19:00", "19:12", "19:24", "19:36", "19:48",
+      "20:00", "20:12", "20:24", "20:36", "20:48",
+      "21:00", "21:12", "21:24", "21:36", "21:48",
+      "22:03", "22:18", "22:33", "22:48",
+      "23:03", "23:18", "23:33", "23:48"
+    ]
   };
 
   function pad2(value) {
@@ -163,8 +218,7 @@
 
   function setProgress(prefix, progress) {
     els[prefix + "Donut"].style.setProperty("--passed", progress.passed);
-    els[prefix + "Passed"].textContent = progress.passed;
-    els[prefix + "Left"].textContent = progress.left;
+    els[prefix + "Percent"].textContent = progress.passed + "%";
   }
 
   function weatherCodeToIcon(code) {
@@ -176,10 +230,25 @@
     return "◌";
   }
 
+  function weatherCodeToSummary(code) {
+    if (code === 0 || code === 1) return "晴れ";
+    if (code === 2) return "晴れ時々曇り";
+    if (code === 3) return "曇り";
+    if (code === 45 || code === 48) return "霧";
+    if (code >= 51 && code <= 57) return "霧雨";
+    if (code >= 61 && code <= 67) return "雨";
+    if (code >= 71 && code <= 77) return "雪";
+    if (code >= 80 && code <= 82) return "にわか雨";
+    if (code >= 85 && code <= 86) return "にわか雪";
+    if (code >= 95 && code <= 99) return "雷雨";
+    return "天気情報なし";
+  }
+
   function setWeatherFallback() {
     els.weatherIcon.textContent = "◌";
     els.weatherHigh.textContent = "--°";
     els.weatherLow.textContent = "--°";
+    els.weatherSummary.textContent = "天気情報を取得できません";
   }
 
   function setWeather(data) {
@@ -191,6 +260,110 @@
     els.weatherIcon.textContent = weatherCodeToIcon(code);
     els.weatherHigh.textContent = typeof high === "number" ? Math.round(high) + "°" : "--°";
     els.weatherLow.textContent = typeof low === "number" ? Math.round(low) + "°" : "--°";
+    els.weatherSummary.textContent = weatherCodeToSummary(code);
+  }
+
+  function getTimetableKind(date) {
+    return date.getDay() === 0 || date.getDay() === 6 ? "weekend" : "weekday";
+  }
+
+  function timeToMinutes(time) {
+    var parts = time.split(":");
+    return Number(parts[0]) * 60 + Number(parts[1]);
+  }
+
+  function getUpcomingTrains(now, timetable, walkMinutes) {
+    var rideReady = new Date(now);
+    var readyMinutes;
+    var todayKind = getTimetableKind(rideReady);
+    var tomorrow = new Date(rideReady);
+    var tomorrowKind;
+    var todayRows;
+    var tomorrowRows;
+    var upcoming = [];
+
+    rideReady.setMinutes(rideReady.getMinutes() + walkMinutes);
+    readyMinutes = rideReady.getHours() * 60 + rideReady.getMinutes();
+    todayKind = getTimetableKind(rideReady);
+    todayRows = timetable[todayKind] || timetable.weekday;
+
+    todayRows.forEach(function (time) {
+      if (timeToMinutes(time) >= readyMinutes && upcoming.length < 3) {
+        upcoming.push({
+          time: time,
+          platform: TRAIN_CONFIG.platform,
+          destination: TRAIN_CONFIG.destinationLabel
+        });
+      }
+    });
+
+    if (upcoming.length < 3) {
+      tomorrow.setDate(rideReady.getDate() + 1);
+      tomorrowKind = getTimetableKind(tomorrow);
+      tomorrowRows = timetable[tomorrowKind] || timetable.weekday;
+      tomorrowRows.some(function (time) {
+        upcoming.push({
+          time: time,
+          platform: TRAIN_CONFIG.platform,
+          destination: TRAIN_CONFIG.destinationLabel
+        });
+        return upcoming.length >= 3;
+      });
+    }
+
+    return upcoming;
+  }
+
+  function getTrainStatus() {
+    return {
+      state: "normal",
+      icon: "✓",
+      main: "NORMAL OPERATION",
+      detail: "遅延は発生していません"
+    };
+  }
+
+  function renderTrainStatus(status) {
+    var current = status || {
+      state: "unknown",
+      icon: "!",
+      main: "STATUS UNKNOWN",
+      detail: "運行情報を取得できません"
+    };
+
+    els.trainStatus.dataset.state = current.state;
+    els.trainStatusIcon.textContent = current.icon;
+    els.trainStatusMain.textContent = current.main;
+    els.trainStatusDetail.textContent = current.detail;
+  }
+
+  function renderTrainList(trains) {
+    els.trainList.textContent = "";
+    trains.forEach(function (train) {
+      var item = document.createElement("li");
+      var time = document.createElement("strong");
+      var platform = document.createElement("span");
+      var destination = document.createElement("p");
+
+      time.textContent = train.time;
+      platform.textContent = "PLATFORM " + train.platform;
+      destination.textContent = train.destination;
+
+      item.appendChild(time);
+      item.appendChild(platform);
+      item.appendChild(destination);
+      els.trainList.appendChild(item);
+    });
+  }
+
+  function renderTrainPanel(now) {
+    try {
+      renderTrainStatus(getTrainStatus());
+      renderTrainList(getUpcomingTrains(now, TOKAIDO_UP_TIMETABLE, TRAIN_CONFIG.walkMinutes));
+    } catch (error) {
+      renderTrainStatus(null);
+      renderTrainList([]);
+    }
   }
 
   function fetchWeather(latitude, longitude) {
@@ -297,6 +470,7 @@
     if (minute !== lastMinute) {
       els.clock.textContent = minute;
       els.clock.setAttribute("datetime", now.toISOString());
+      renderTrainPanel(now);
       lastMinute = minute;
     }
 

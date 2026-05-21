@@ -21,14 +21,6 @@
         <div class="primary">
           <section class="clock-panel" aria-label="Current time">
             <time class="clock" id="clock" datetime="">00:00</time>
-            <aside class="weather" aria-label="Weather forecast">
-              <span class="weather-label">WEATHER</span>
-              <span class="weather-main">
-                <span class="weather-icon" id="weatherIcon" aria-hidden="true">◌</span>
-                <span class="weather-temp"><span>HIGH</span> <strong id="weatherHigh">--°</strong></span>
-                <span class="weather-temp"><span>LOW</span> <strong id="weatherLow">--°</strong></span>
-              </span>
-            </aside>
           </section>
 
           <section class="calendars" aria-label="Monthly calendars">
@@ -37,46 +29,62 @@
           </section>
         </div>
 
-        <aside class="progress-stack" aria-label="Time progress">
-          <article class="progress-item" data-period="day">
-            <div class="donut accent-yellow" id="dayDonut" aria-hidden="true">
-              <span>DAY</span>
+        <aside class="side-panel" aria-label="Transit weather and time progress">
+          <section class="panel-section train-panel" aria-label="Train information">
+            <div class="section-heading">
+              <span>TRAIN</span>
+              <strong>[TOKAIDO LINE]</strong>
             </div>
-            <div class="progress-copy">
-              <p><span>PASSED</span> <strong id="dayPassed">0</strong><small>%</small></p>
-              <p><span>LEFT</span> <strong id="dayLeft">100</strong><small>%</small></p>
+            <div class="train-status" id="trainStatus">
+              <span class="train-status-icon" id="trainStatusIcon">✓</span>
+              <div>
+                <strong id="trainStatusMain">NORMAL OPERATION</strong>
+                <p id="trainStatusDetail">遅延は発生していません</p>
+              </div>
             </div>
-          </article>
+            <div class="section-subheading">NEXT TRAINS (UP / TOWARD TOKYO)</div>
+            <ol class="train-list" id="trainList" aria-label="Upcoming trains"></ol>
+          </section>
 
-          <article class="progress-item" data-period="week">
-            <div class="donut accent-blue" id="weekDonut" aria-hidden="true">
-              <span>WEEK</span>
+          <section class="panel-section weather-panel" aria-label="Weather forecast">
+            <div class="section-heading">
+              <span>WEATHER</span>
             </div>
-            <div class="progress-copy">
-              <p><span>PASSED</span> <strong id="weekPassed">0</strong><small>%</small></p>
-              <p><span>LEFT</span> <strong id="weekLeft">100</strong><small>%</small></p>
+            <div class="weather-row">
+              <span class="weather-icon" id="weatherIcon" aria-hidden="true">◌</span>
+              <strong id="weatherHigh">--°</strong>
+              <span>/</span>
+              <strong id="weatherLow">--°</strong>
             </div>
-          </article>
+            <p class="weather-summary" id="weatherSummary">天気情報を取得中</p>
+          </section>
 
-          <article class="progress-item" data-period="month">
-            <div class="donut accent-green" id="monthDonut" aria-hidden="true">
-              <span>MONTH</span>
-            </div>
-            <div class="progress-copy">
-              <p><span>PASSED</span> <strong id="monthPassed">0</strong><small>%</small></p>
-              <p><span>LEFT</span> <strong id="monthLeft">100</strong><small>%</small></p>
-            </div>
-          </article>
-
-          <article class="progress-item" data-period="year">
-            <div class="donut accent-pink" id="yearDonut" aria-hidden="true">
-              <span>YEAR</span>
-            </div>
-            <div class="progress-copy">
-              <p><span>PASSED</span> <strong id="yearPassed">0</strong><small>%</small></p>
-              <p><span>LEFT</span> <strong id="yearLeft">100</strong><small>%</small></p>
-            </div>
-          </article>
+          <section class="panel-section compact-progress" aria-label="Time progress">
+            <article class="compact-progress-item" data-period="day">
+              <div class="donut mini-donut accent-yellow" id="dayDonut" aria-hidden="true">
+                <span id="dayPercent">0%</span>
+              </div>
+              <strong>DAY</strong>
+            </article>
+            <article class="compact-progress-item" data-period="week">
+              <div class="donut mini-donut accent-blue" id="weekDonut" aria-hidden="true">
+                <span id="weekPercent">0%</span>
+              </div>
+              <strong>WEEK</strong>
+            </article>
+            <article class="compact-progress-item" data-period="month">
+              <div class="donut mini-donut accent-green" id="monthDonut" aria-hidden="true">
+                <span id="monthPercent">0%</span>
+              </div>
+              <strong>MONTH</strong>
+            </article>
+            <article class="compact-progress-item" data-period="year">
+              <div class="donut mini-donut accent-pink" id="yearDonut" aria-hidden="true">
+                <span id="yearPercent">0%</span>
+              </div>
+              <strong>YEAR</strong>
+            </article>
+          </section>
         </aside>
       </section>
     </main>
