@@ -18,6 +18,7 @@
     weatherLow: document.getElementById("weatherLow"),
     weatherSummary: document.getElementById("weatherSummary"),
     weatherAdvice: document.getElementById("weatherAdvice"),
+    weatherAdviceIcon: document.getElementById("weatherAdviceIcon"),
     weatherAdviceHeadline: document.getElementById("weatherAdviceHeadline"),
     weatherAdviceDetail: document.getElementById("weatherAdviceDetail"),
     trainStatus: document.getElementById("trainStatus"),
@@ -304,8 +305,15 @@
     var rainChance = daily && daily.precipitation_probability_max && daily.precipitation_probability_max[0];
     var advice = getClothingAdvice(high, low, code, rainChance);
 
+    els.weatherAdviceIcon.textContent = rainyClothingIcon(code, rainChance);
     els.weatherAdviceHeadline.textContent = advice.headline;
     els.weatherAdviceDetail.textContent = advice.detail;
+  }
+
+  function rainyClothingIcon(code, precipitationProbability) {
+    var rainy = (typeof precipitationProbability === "number" && precipitationProbability >= 50)
+      || code === 61 || code === 63 || code === 65 || code === 80 || code === 81 || code === 82;
+    return rainy ? "☂" : "👕";
   }
 
   function setWeatherFallback() {
