@@ -34,6 +34,8 @@
     yearPercent: document.getElementById("yearPercent")
   };
 
+  var viewMode = new URLSearchParams(window.location.search).get("view");
+  var isFamilyView = viewMode === "family";
   var lastMinute = "";
   var lastDateKey = "";
   var holidayNamesByDate = {};
@@ -445,8 +447,13 @@
   function ensureHolidayData(now) {
     if (!window.fetch) return;
 
+    var years = [now.getFullYear()];
     var nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    [now.getFullYear(), nextMonth.getFullYear()].forEach(function (year) {
+    if (!isFamilyView) {
+      years.push(nextMonth.getFullYear());
+    }
+
+    years.forEach(function (year) {
       if (!requestedHolidayYears[year]) {
         fetchHolidaysForYear(year, new Date(now));
       }
@@ -458,7 +465,15 @@
     els.dateLabel.textContent = formatDateLabel(now);
     els.weekLabel.textContent = "WEEK " + pad2(getIsoWeekNumber(now));
     renderMonth(els.currentMonth, now.getFullYear(), now.getMonth(), now);
-    renderMonth(els.nextMonth, nextMonth.getFullYear(), nextMonth.getMonth(), now);
+
+    if (isFamilyView) {
+      els.nextMonth.hidden = true;
+      els.nextMonth.textContent = "";
+    } else {
+      els.nextMonth.hidden = false;
+      renderMonth(els.nextMonth, nextMonth.getFullYear(), nextMonth.getMonth(), now);
+    }
+
     ensureHolidayData(now);
   }
 
@@ -489,6 +504,10 @@
     var x = Math.round(Math.random() * 6) - 3;
     els.dashboard.style.setProperty("--nudge-x", x + "px");
     els.dashboard.style.setProperty("--nudge-y", "0px");
+  }
+
+  if (isFamilyView) {
+    els.dashboard.classList.add("family-view");
   }
 
   update();

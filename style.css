@@ -94,11 +94,20 @@ body {
   padding-top: clamp(18px, 3vh, 34px);
 }
 
+.family-view .layout {
+  grid-template-columns: minmax(0, 0.82fr) clamp(430px, 35vw, 580px);
+  gap: clamp(20px, 2.2vw, 34px);
+}
+
 .primary {
   display: grid;
   grid-template-rows: minmax(230px, 1fr) auto;
   gap: clamp(18px, 3vh, 32px);
   min-width: 0;
+}
+
+.family-view .primary {
+  grid-template-rows: minmax(220px, 0.8fr) auto;
 }
 
 .clock-panel {
@@ -190,6 +199,10 @@ body {
   background: var(--panel);
 }
 
+.family-view .side-panel {
+  padding: clamp(18px, 1.8vw, 28px);
+}
+
 .panel-section {
   padding: clamp(14px, 1.8vh, 20px) 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
@@ -220,6 +233,11 @@ body {
   font-size: clamp(1.12rem, 1.25vw, 1.45rem);
 }
 
+.family-view .section-heading {
+  margin-bottom: 16px;
+  font-size: clamp(1.5rem, 1.65vw, 2.05rem);
+}
+
 .section-heading strong {
   color: var(--accent-weekend);
   font-size: 0.82em;
@@ -232,6 +250,11 @@ body {
   font-size: clamp(0.95rem, 1vw, 1.16rem);
 }
 
+.family-view .section-subheading {
+  margin: 20px 0 14px;
+  font-size: clamp(1.18rem, 1.22vw, 1.45rem);
+}
+
 .train-status {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -242,10 +265,19 @@ body {
   background: rgba(111, 154, 114, 0.1);
 }
 
+.family-view .train-status {
+  gap: 16px;
+  padding: 16px 18px;
+}
+
 .train-status-icon {
   color: var(--accent-green);
   font-size: clamp(1.35rem, 1.6vw, 1.85rem);
   line-height: 1;
+}
+
+.family-view .train-status-icon {
+  font-size: clamp(2rem, 2.4vw, 2.75rem);
 }
 
 .train-status strong {
@@ -257,12 +289,22 @@ body {
   line-height: 1;
 }
 
+.family-view .train-status strong {
+  font-size: clamp(1.8rem, 2vw, 2.5rem);
+}
+
 .train-status p,
 .weather-summary {
   margin: 4px 0 0;
   color: #cfc7b8;
   font-size: clamp(0.95rem, 1vw, 1.1rem);
   line-height: 1.25;
+}
+
+.family-view .train-status p,
+.family-view .weather-summary {
+  margin-top: 7px;
+  font-size: clamp(1.25rem, 1.35vw, 1.58rem);
 }
 
 .train-status[data-state="unknown"] {
@@ -283,6 +325,10 @@ body {
   list-style: none;
 }
 
+.family-view .train-list {
+  gap: 14px;
+}
+
 .train-list li {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -290,6 +336,11 @@ body {
   align-items: baseline;
   padding-bottom: 9px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.family-view .train-list li {
+  column-gap: 18px;
+  padding-bottom: 14px;
 }
 
 .train-list li:last-child {
@@ -305,6 +356,10 @@ body {
   line-height: 1;
 }
 
+.family-view .train-list strong {
+  font-size: clamp(2.45rem, 3.1vw, 3.65rem);
+}
+
 .train-list span {
   color: #d8d0c0;
   font-family: var(--header-font);
@@ -313,11 +368,20 @@ body {
   line-height: 1;
 }
 
+.family-view .train-list span {
+  font-size: clamp(1.28rem, 1.35vw, 1.62rem);
+}
+
 .train-list p {
   margin: 3px 0 0;
   color: var(--accent-weekend);
   font-size: clamp(0.96rem, 1vw, 1.12rem);
   line-height: 1.15;
+}
+
+.family-view .train-list p {
+  margin-top: 7px;
+  font-size: clamp(1.26rem, 1.35vw, 1.58rem);
 }
 
 .weather-row {
@@ -329,9 +393,17 @@ body {
   line-height: 1;
 }
 
+.family-view .weather-row {
+  gap: 16px;
+}
+
 .weather-panel .weather-icon {
   color: var(--accent-yellow);
   font-size: clamp(2rem, 2.25vw, 2.65rem);
+}
+
+.family-view .weather-panel .weather-icon {
+  font-size: clamp(3.6rem, 4.2vw, 5rem);
 }
 
 .weather-row strong {
@@ -339,10 +411,22 @@ body {
   font-size: clamp(1.65rem, 1.8vw, 2.15rem);
 }
 
+.family-view .weather-row strong {
+  font-size: clamp(2.35rem, 2.7vw, 3.25rem);
+}
+
+.family-view .weather-row span {
+  font-size: clamp(1.65rem, 1.8vw, 2.1rem);
+}
+
 .compact-progress {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
+}
+
+.family-view .compact-progress {
+  gap: 10px;
 }
 
 .compact-progress-item {
@@ -352,6 +436,10 @@ body {
   justify-items: center;
   gap: 7px;
   min-width: 0;
+}
+
+.family-view .compact-progress-item {
+  --donut-size: clamp(56px, 4.2vw, 70px);
 }
 
 .compact-progress-item strong {
@@ -367,6 +455,10 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(250px, 1fr));
   gap: clamp(14px, 2vw, 22px);
+}
+
+.family-view .calendars {
+  grid-template-columns: minmax(260px, 1fr);
 }
 
 .month-card {
@@ -738,6 +830,20 @@ body {
     justify-content: center;
     justify-items: stretch;
     text-align: left;
+  }
+}
+
+@media (max-width: 960px) {
+  .family-view .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .family-view .primary {
+    grid-template-rows: auto auto;
+  }
+
+  .family-view .side-panel {
+    padding: clamp(16px, 4vw, 24px);
   }
 }
 
