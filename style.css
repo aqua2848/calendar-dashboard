@@ -797,157 +797,157 @@ body {
   }
 
   .dashboard.family-view {
-    padding: 8px 10px;
+    padding: 6px 10px;
   }
 
   .family-view .topbar {
-    min-height: 100px;
-    padding: 8px 14px 11px;
+    min-height: 82px;
+    padding: 6px 14px 8px;
   }
 
   .family-view .today-label {
-    font-size: clamp(3rem, 5.8vw, 3.75rem);
+    font-size: clamp(2.65rem, 5.15vw, 3.35rem);
   }
 
   .family-view .week-label {
-    margin-top: 8px;
-    font-size: clamp(1.9rem, 3.3vw, 2.35rem);
+    margin-top: 6px;
+    font-size: clamp(1.55rem, 2.9vw, 2rem);
   }
 
   .family-view .layout {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.08fr);
-    gap: 14px;
-    padding-top: 14px;
+    gap: 12px;
+    padding-top: 12px;
   }
 
   .family-view .primary {
-    grid-template-rows: 244px auto;
-    gap: 12px;
+    grid-template-rows: 210px auto;
+    gap: 10px;
   }
 
   .family-view .clock-panel {
-    min-height: 244px;
+    min-height: 210px;
   }
 
   .family-view .clock {
-    font-size: clamp(8.2rem, 16.5vw, 10.8rem);
+    font-size: clamp(7.4rem, 15.2vw, 9.9rem);
   }
 
   .family-view .month-title {
-    padding: 6px 10px 5px;
-    font-size: 1.58rem;
+    padding: 5px 10px 4px;
+    font-size: 1.42rem;
   }
 
   .family-view .calendar-grid {
     gap: 1px;
-    padding: 8px 10px 9px;
+    padding: 6px 10px 7px;
   }
 
   .family-view .weekday,
   .family-view .day {
-    min-height: 26px;
+    min-height: 23px;
   }
 
   .family-view .weekday {
-    font-size: 1.02rem;
+    font-size: 0.92rem;
   }
 
   .family-view .day {
-    font-size: 1.58rem;
+    font-size: 1.38rem;
   }
 
   .family-view .side-panel {
-    padding: 14px 18px;
+    padding: 12px 18px;
   }
 
   .family-view .panel-section {
-    padding: 10px 0;
+    padding: 7px 0;
   }
 
   .family-view .section-heading {
-    margin-bottom: 10px;
-    font-size: 1.42rem;
+    margin-bottom: 8px;
+    font-size: 1.3rem;
   }
 
   .family-view .section-subheading {
-    margin: 12px 0 9px;
-    font-size: 1.05rem;
+    margin: 9px 0 7px;
+    font-size: 0.96rem;
   }
 
   .family-view .train-status {
-    gap: 12px;
-    padding: 12px 14px;
+    gap: 10px;
+    padding: 9px 13px;
   }
 
   .family-view .train-status-icon {
-    font-size: 1.95rem;
+    font-size: 1.65rem;
   }
 
   .family-view .train-status strong {
-    font-size: 1.72rem;
+    font-size: 1.48rem;
   }
 
   .family-view .train-status p,
   .family-view .weather-summary {
-    margin-top: 4px;
-    font-size: 1.2rem;
+    margin-top: 3px;
+    font-size: 1.05rem;
   }
 
   .family-view .train-list {
-    gap: 8px;
+    gap: 6px;
   }
 
   .family-view .train-list li {
-    grid-template-columns: minmax(122px, 0.44fr) minmax(0, 1fr);
-    column-gap: 14px;
-    padding-bottom: 9px;
+    grid-template-columns: minmax(120px, 0.42fr) minmax(0, 1fr);
+    column-gap: 12px;
+    padding-bottom: 7px;
   }
 
   .family-view .train-list strong {
-    font-size: 2.55rem;
+    font-size: 2.25rem;
   }
 
   .family-view .train-list span,
   .family-view .train-list p {
-    font-size: 1.18rem;
+    font-size: 1.05rem;
   }
 
   .family-view .train-list p {
-    margin-top: 4px;
+    margin-top: 3px;
   }
 
   .family-view .weather-row {
-    gap: 14px;
+    gap: 12px;
   }
 
   .family-view .weather-panel .weather-icon {
-    font-size: 3.2rem;
+    font-size: 2.75rem;
   }
 
   .family-view .weather-row strong {
-    font-size: 2.35rem;
+    font-size: 2.05rem;
   }
 
   .family-view .weather-row span {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .family-view .compact-progress {
-    gap: 8px;
+    gap: 6px;
   }
 
   .family-view .compact-progress-item {
-    --donut-size: 58px;
+    --donut-size: 48px;
 
-    gap: 5px;
+    gap: 4px;
   }
 
   .family-view .compact-progress-item strong {
-    font-size: 0.82rem;
+    font-size: 0.72rem;
   }
 
   .family-view .mini-donut span {
-    font-size: 0.9rem;
+    font-size: 0.78rem;
   }
 }
 
