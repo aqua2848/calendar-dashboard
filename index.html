@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260522-6">
+    <link rel="stylesheet" href="style.css?v=20260522-9">
   </head>
   <body>
     <main class="dashboard" id="dashboard">
@@ -57,6 +57,12 @@
               <strong id="weatherLow">--°</strong>
               <p class="weather-summary" id="weatherSummary">取得中</p>
             </div>
+            <div class="weather-advice" id="weatherAdvice" aria-label="Clothing advice">
+              <span class="weather-advice-icon" id="weatherAdviceIcon" aria-hidden="true">👕</span>
+              <div class="weather-advice-label">服装アドバイス</div>
+              <strong id="weatherAdviceHeadline">長袖＋薄手の羽織り</strong>
+              <p id="weatherAdviceDetail">朝晩は肌寒いので、羽織りものがあると安心です。</p>
+            </div>
           </section>
 
           <section class="panel-section compact-progress" aria-label="Time progress">
@@ -89,6 +95,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260522-6" defer></script>
+    <script src="app.js?v=20260522-9" defer></script>
   </body>
 </html>
