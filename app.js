@@ -250,7 +250,7 @@
     els.weatherIcon.textContent = "◌";
     els.weatherHigh.textContent = "--°";
     els.weatherLow.textContent = "--°";
-    els.weatherSummary.textContent = "天気情報を取得できません";
+    els.weatherSummary.textContent = "取得不可";
   }
 
   function setWeather(data) {
