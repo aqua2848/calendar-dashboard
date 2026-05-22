@@ -17,6 +17,9 @@
     weatherHigh: document.getElementById("weatherHigh"),
     weatherLow: document.getElementById("weatherLow"),
     weatherSummary: document.getElementById("weatherSummary"),
+    weatherAdvice: document.getElementById("weatherAdvice"),
+    weatherAdviceHeadline: document.getElementById("weatherAdviceHeadline"),
+    weatherAdviceDetail: document.getElementById("weatherAdviceDetail"),
     trainStatus: document.getElementById("trainStatus"),
     trainStatusIcon: document.getElementById("trainStatusIcon"),
     trainStatusMain: document.getElementById("trainStatusMain"),
@@ -246,11 +249,71 @@
     return "天気情報なし";
   }
 
+  function getClothingAdvice(maxTemp, minTemp, code, precipitationProbability) {
+    var hasTemps = typeof maxTemp === "number" && typeof minTemp === "number";
+    var diff = hasTemps ? maxTemp - minTemp : 0;
+    var rainy = typeof precipitationProbability === "number" && precipitationProbability >= 50;
+    var detailSuffix = rainy ? " 雨の日は足元と傘も忘れずに。" : "";
+
+    if (!hasTemps) {
+      return {
+        headline: "長袖＋薄手の羽織り",
+        detail: "天気が安定しない日は、軽く調整できる服装が安心です。"
+      };
+    }
+
+    if (maxTemp >= 30) {
+      return {
+        headline: "半袖＋暑さ対策",
+        detail: "水分補給と日差し対策を忘れずに。" + detailSuffix
+      };
+    }
+
+    if (maxTemp >= 25) {
+      return {
+        headline: "半袖でOK",
+        detail: diff >= 8 ? "朝晩用に薄手の羽織りがあると安心です。" + detailSuffix : "日中は軽めの服装で過ごしやすそうです。" + detailSuffix
+      };
+    }
+
+    if (maxTemp >= 20) {
+      return {
+        headline: "長袖 or 薄手の羽織り",
+        detail: diff >= 6 ? "朝晩は少し肌寒いかもしれません。" + detailSuffix : "一枚で調整しやすい服装がおすすめです。" + detailSuffix
+      };
+    }
+
+    if (maxTemp >= 15) {
+      return {
+        headline: "長袖＋薄手のアウター",
+        detail: diff >= 5 ? "朝晩は肌寒いので羽織りものがあると安心です。" + detailSuffix : "日中も軽い上着があると過ごしやすそうです。" + detailSuffix
+      };
+    }
+
+    return {
+      headline: "アウターを忘れずに",
+      detail: "冷えやすいので、あたたかめの服装がおすすめです。" + detailSuffix
+    };
+  }
+
+  function setClothingAdvice(data) {
+    var daily = data && data.daily;
+    var code = daily && daily.weather_code && daily.weather_code[0];
+    var high = daily && daily.temperature_2m_max && daily.temperature_2m_max[0];
+    var low = daily && daily.temperature_2m_min && daily.temperature_2m_min[0];
+    var rainChance = daily && daily.precipitation_probability_max && daily.precipitation_probability_max[0];
+    var advice = getClothingAdvice(high, low, code, rainChance);
+
+    els.weatherAdviceHeadline.textContent = advice.headline;
+    els.weatherAdviceDetail.textContent = advice.detail;
+  }
+
   function setWeatherFallback() {
     els.weatherIcon.textContent = "◌";
     els.weatherHigh.textContent = "--°";
     els.weatherLow.textContent = "--°";
     els.weatherSummary.textContent = "取得不可";
+    setClothingAdvice(null);
   }
 
   function setWeather(data) {
@@ -263,6 +326,7 @@
     els.weatherHigh.textContent = typeof high === "number" ? Math.round(high) + "°" : "--°";
     els.weatherLow.textContent = typeof low === "number" ? Math.round(low) + "°" : "--°";
     els.weatherSummary.textContent = weatherCodeToSummary(code);
+    setClothingAdvice(data);
   }
 
   function getTimetableKind(date) {
@@ -378,6 +442,7 @@
       + "?latitude=" + encodeURIComponent(latitude)
       + "&longitude=" + encodeURIComponent(longitude)
       + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
+      + ",precipitation_probability_max"
       + "&timezone=Asia%2FTokyo";
 
     fetch(url, { cache: "no-store" })

@@ -450,6 +450,41 @@ body {
   line-height: 1;
 }
 
+.weather-advice {
+  display: none;
+}
+
+.family-view .weather-advice {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.weather-advice-label {
+  color: var(--muted);
+  font-family: var(--header-font);
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.family-view .weather-advice strong {
+  color: #f2ead9;
+  font-family: var(--header-font);
+  font-size: clamp(2rem, 2.2vw, 3rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.family-view .weather-advice p {
+  margin: 0;
+  color: #d7cfbf;
+  font-size: clamp(1.15rem, 1.25vw, 1.55rem);
+  line-height: 1.25;
+}
+
 .compact-progress {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -996,6 +1031,23 @@ body {
 
   .family-view .weather-summary {
     font-size: 2.45rem;
+  }
+
+  .family-view .weather-advice {
+    gap: 4px;
+    padding: 8px 10px 7px;
+  }
+
+  .family-view .weather-advice-label {
+    font-size: 0.88rem;
+  }
+
+  .family-view .weather-advice strong {
+    font-size: 1.55rem;
+  }
+
+  .family-view .weather-advice p {
+    font-size: 1rem;
   }
 
   .family-view .compact-progress {
