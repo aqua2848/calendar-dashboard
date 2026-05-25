@@ -14,6 +14,7 @@
     dateLabel: document.getElementById("dateLabel"),
     weekLabel: document.getElementById("weekLabel"),
     weatherIcon: document.getElementById("weatherIcon"),
+    weatherCurrent: document.getElementById("weatherCurrent"),
     weatherHigh: document.getElementById("weatherHigh"),
     weatherLow: document.getElementById("weatherLow"),
     weatherSummary: document.getElementById("weatherSummary"),
@@ -248,18 +249,24 @@
 
   function setWeatherFallback() {
     els.weatherIcon.textContent = "◌";
+    els.weatherCurrent.textContent = "--°";
     els.weatherHigh.textContent = "--°";
     els.weatherLow.textContent = "--°";
     els.weatherSummary.textContent = "天気情報を取得できません";
   }
 
   function setWeather(data) {
+    var current = data && data.current;
     var daily = data && data.daily;
-    var code = daily && daily.weather_code && daily.weather_code[0];
+    var code = current && typeof current.weather_code === "number"
+      ? current.weather_code
+      : daily && daily.weather_code && daily.weather_code[0];
+    var currentTemp = current && current.temperature_2m;
     var high = daily && daily.temperature_2m_max && daily.temperature_2m_max[0];
     var low = daily && daily.temperature_2m_min && daily.temperature_2m_min[0];
 
     els.weatherIcon.textContent = weatherCodeToIcon(code);
+    els.weatherCurrent.textContent = typeof currentTemp === "number" ? Math.round(currentTemp) + "°" : "--°";
     els.weatherHigh.textContent = typeof high === "number" ? Math.round(high) + "°" : "--°";
     els.weatherLow.textContent = typeof low === "number" ? Math.round(low) + "°" : "--°";
     els.weatherSummary.textContent = weatherCodeToSummary(code);
@@ -377,6 +384,7 @@
     var url = "https://api.open-meteo.com/v1/forecast"
       + "?latitude=" + encodeURIComponent(latitude)
       + "&longitude=" + encodeURIComponent(longitude)
+      + "&current=temperature_2m,weather_code"
       + "&daily=weather_code,temperature_2m_max,temperature_2m_min"
       + "&timezone=Asia%2FTokyo";
 

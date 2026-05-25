@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260522-4">
+    <link rel="stylesheet" href="style.css?v=20260526-1">
   </head>
   <body>
     <main class="dashboard" id="dashboard">
@@ -51,11 +51,18 @@
               <span>WEATHER</span>
             </div>
             <div class="weather-row">
-              <span class="weather-icon" id="weatherIcon" aria-hidden="true">◌</span>
-              <strong id="weatherHigh">--°</strong>
-              <span>/</span>
-              <strong id="weatherLow">--°</strong>
-              <p class="weather-summary" id="weatherSummary">天気情報を取得中</p>
+              <div class="weather-current-line">
+                <span class="weather-icon" id="weatherIcon" aria-hidden="true">◌</span>
+                <span class="weather-current-label">現在</span>
+                <strong class="weather-current" id="weatherCurrent">--°</strong>
+                <p class="weather-summary" id="weatherSummary">天気情報を取得中</p>
+              </div>
+              <p class="weather-range">
+                <span>最高</span>
+                <strong id="weatherHigh">--°</strong>
+                <span>/ 最低</span>
+                <strong id="weatherLow">--°</strong>
+              </p>
             </div>
           </section>
 
@@ -89,6 +96,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260522-4" defer></script>
+    <script src="app.js?v=20260526-1" defer></script>
   </body>
 </html>
