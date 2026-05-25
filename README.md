@@ -8,6 +8,16 @@
 
 Google Fontsを読み込むため、フォントを反映するにはインターネット接続が必要です。オフライン時もシステムフォントにフォールバックして表示されます。
 
+## Codexでの見た目検証メモ
+
+Codex環境でこの静的HTMLをPlaywright検証する場合は、in-app Browserや `file://`、ローカルHTTPサーバーではなく、バンドル済みNode.js + Playwright + ローカルChromeを使います。
+
+- Node.js: `C:\Users\aqua2\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe`
+- `NODE_PATH`: `C:\Users\aqua2\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules;C:\Users\aqua2\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\.pnpm\node_modules`
+- Chrome: `C:\Program Files\Google\Chrome\Application\chrome.exe`
+
+検証スクリプトでは `index.html` に `style.css` と `app.js` をインライン展開し、Playwright の `context.route()` で `https://calendar-dashboard.local/**` に返します。Google Fonts、天気API、祝日APIも `context.route()` でモックすると、ネットワーク制限や位置情報待ちに引っかからずに安定して検証できます。家族モードは `https://calendar-dashboard.local/?view=family`、通常モードは `https://calendar-dashboard.local/` として開きます。
+
 ## GitHub Pagesで公開する方法
 
 1. この `calendar-dashboard` フォルダをGitHubリポジトリに配置します。
